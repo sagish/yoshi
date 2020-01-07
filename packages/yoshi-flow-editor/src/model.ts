@@ -2,7 +2,7 @@ import path from 'path';
 import globby from 'globby';
 import { getProjectArtifactId } from 'yoshi-helpers/utils';
 import resolve from 'resolve';
-import { Config } from 'yoshi-config/build/config';
+import { FlowEditorConfig } from './bin/yoshi-flow-editor';
 
 export interface FlowEditorModel {
   appName: string;
@@ -33,7 +33,7 @@ function resolveFrom(dir: string, fileName: string) {
 }
 
 export async function generateFlowEditorModel(
-  config: Config,
+  config: FlowEditorConfig,
 ): Promise<FlowEditorModel> {
   const artifactId = getProjectArtifactId();
   if (!artifactId) {

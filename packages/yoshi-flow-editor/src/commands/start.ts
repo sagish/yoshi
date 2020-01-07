@@ -37,7 +37,7 @@ const start: cliCommand = async function(argv, config, model) {
     '--help': help,
     '--url': url,
     '--production': shouldRunAsProduction,
-    '--https': shouldUseHttps = config.servers.cdn.ssl,
+    '--https': shouldUseHttps = true,
   } = args;
 
   if (help) {
@@ -76,7 +76,7 @@ const start: cliCommand = async function(argv, config, model) {
 
   const clientConfig = createClientWebpackConfig(config, {
     isDev: true,
-    isHot: config.hmr as boolean,
+    isHot: true,
     customEntry: buildEditorPlatformEntries(model),
   });
 
@@ -95,16 +95,14 @@ const start: cliCommand = async function(argv, config, model) {
   const devEnvironment = await DevEnvironment.create({
     webpackConfigs: [clientConfig, serverConfig, webWorkerConfig],
     https: shouldUseHttps,
-    webpackDevServerPort: config.servers.cdn.port,
+    webpackDevServerPort: 3200,
     appName: config.name,
     serverFilePath: require.resolve('yoshi-flow-editor/build/server/server.js'),
-    startUrl: url ||
-      config.startUrl || [
-        `https://localhost:3000/editor/todo`,
-        'https://localhost:3000/settings/todo',
-      ],
-    enableClientHotUpdates: Boolean(config.hmr),
-    createEjsTemplates: config.experimentalBuildHtml,
+    startUrl: url || [
+      `https://localhost:3000/editor/todo`,
+      'https://localhost:3000/settings/todo',
+    ],
+    enableClientHotUpdates: true,
   });
 
   await devEnvironment.start();

@@ -1,35 +1,27 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import webpack from 'webpack';
-import { createServerEntries } from 'yoshi-common/webpack-utils';
 import { createBaseWebpackConfig } from 'yoshi-common/webpack.config';
-import { Config } from 'yoshi-config/build/config';
-import {
-  isTypescriptProject,
-  inTeamCity,
-  isProduction,
-} from 'yoshi-helpers/queries';
+import { isTypescriptProject } from 'yoshi-helpers/queries';
+import { FlowEditorConfig } from './bin/yoshi-flow-editor';
 
 const useTypeScript = isTypescriptProject();
 
-const createDefaultOptions = (config: Config) => {
-  const separateCss =
-    config.separateCss === 'prod'
-      ? inTeamCity() || isProduction()
-      : config.separateCss;
+const createDefaultOptions = (config: FlowEditorConfig) => {
+  const separateCss = false;
 
   return {
     name: config.name as string,
     useTypeScript,
     typeCheckTypeScript: useTypeScript,
-    useAngular: config.isAngularProject,
-    devServerUrl: config.servers.cdn.url,
+    useAngular: false,
+    devServerUrl: 'https://localhost:3200/',
     separateCss,
     enhancedTpaStyle: true,
   };
 };
 
 export function createClientWebpackConfig(
-  config: Config,
+  config: FlowEditorConfig,
   {
     isDev,
     isHot,
@@ -54,12 +46,11 @@ export function createClientWebpackConfig(
     isAnalyze,
     forceEmitSourceMaps,
     exportAsLibraryName: '[name]',
-    cssModules: config.cssModules,
+    cssModules: true,
     ...defaultOptions,
   });
 
   clientConfig.entry = customEntry;
-  clientConfig.resolve!.alias = config.resolveAlias;
   clientConfig.externals = {
     react: {
       amd: 'react',
@@ -81,7 +72,7 @@ export function createClientWebpackConfig(
 }
 
 export function createServerWebpackConfig(
-  config: Config,
+  config: FlowEditorConfig,
   { isDev, isHot }: { isDev?: boolean; isHot?: boolean } = {},
 ): webpack.Configuration {
   const defaultOptions = createDefaultOptions(config);
@@ -97,11 +88,9 @@ export function createServerWebpackConfig(
   serverConfig.entry = async () => {
     const serverEntry = '../node_modules/yoshi-flow-editor/build/server/server';
 
-    let entryConfig = config.yoshiServer
-      ? createServerEntries(serverConfig.context as string)
-      : {};
-
-    entryConfig = { ...entryConfig, server: serverEntry };
+    const entryConfig = {
+      server: serverEntry,
+    };
 
     return entryConfig;
   };
@@ -110,7 +99,7 @@ export function createServerWebpackConfig(
 }
 
 export function createWebWorkerWebpackConfig(
-  config: Config,
+  config: FlowEditorConfig,
   {
     isDev,
     isHot,

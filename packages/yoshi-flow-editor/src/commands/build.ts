@@ -83,11 +83,10 @@ const build: cliCommand = async function(argv, config, model) {
 
     await Promise.all([
       petriSpecs({
-        config: config.petriSpecsConfig,
+        config: {},
       }),
       wixMavenStatics({
-        clientProjectName: config.clientProjectName,
-        staticsDir: config.clientFilesPath,
+        staticsDir: path.resolve('dist/statics'),
       }),
     ]);
   }

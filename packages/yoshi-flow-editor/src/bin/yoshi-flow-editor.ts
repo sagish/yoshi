@@ -6,17 +6,18 @@ process.on('unhandledRejection', error => {
 
 import arg from 'arg';
 import loadConfig from 'yoshi-config/loadConfig';
-import { Config } from 'yoshi-config/build/config';
 import normalizeDebuggingArgs from 'yoshi-common/normalize-debugging-args';
 import verifyDependencies from 'yoshi-common/verify-dependencies';
 import verifyNodeVersion from 'yoshi-common/verify-node-version';
 import { generateFlowEditorModel, FlowEditorModel } from '../model';
 
+export type FlowEditorConfig = { name: string };
+
 const defaultCommand = 'start';
 
 export type cliCommand = (
   argv: Array<string>,
-  config: Config,
+  config: FlowEditorConfig,
   model: FlowEditorModel,
 ) => Promise<void>;
 
@@ -92,19 +93,18 @@ Promise.resolve().then(async () => {
     process.env.BABEL_ENV = 'production';
   }
 
-  const config = loadConfig();
-  // This line is because the default ssl config is false,
-  // and since we use yoshi-flow-legacy test command,
-  // we need to configure ssl to true becase we did implement build and start commands
-  // with ssl true as default (this should be removed when test cmd is implemented)
-  config.servers.cdn.ssl = true;
+  const originalConfig = loadConfig();
 
-  const model = await generateFlowEditorModel(config);
+  const flowEditorConfig: FlowEditorConfig = {
+    name: originalConfig.name,
+  };
+
+  const model = await generateFlowEditorModel(flowEditorConfig);
 
   const runCommand = (await commands[command]()).default;
 
   // legacy flow commands doen't need to be run
   if (typeof runCommand === 'function') {
-    await runCommand(forwardedArgs, config, model);
+    await runCommand(forwardedArgs, flowEditorConfig, model);
   }
 });
