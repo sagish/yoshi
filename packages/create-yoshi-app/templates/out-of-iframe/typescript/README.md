@@ -82,7 +82,7 @@ See [`viewerApp/viewerApp.e2e.ts`](./src/viewerApp/viewerApp.e2e.ts) for an exam
 
 #### E2E Against Locally Served HTMLs
 
-When running tests, Yoshi runs your [`dev/server.js`](./dev/server.js) as configured in [`jest-yoshi.config.js`](./jest-yoshi.config.js).
+When running tests, Yoshi runs your [`index-dev.js`](./index-dev.js) as configured in [`jest-yoshi.config.js`](./jest-yoshi.config.js).
 
 See [`editorApp/editorApp.e2e.ts`](./src/editorApp/editorApp.e2e.ts) & [`settingsPanel/settingsPanel.e2e.ts`](./src/settingsPanel/settingsPanel.e2e.ts) for an example.
 
