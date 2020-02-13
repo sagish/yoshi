@@ -1,9 +1,9 @@
-const testKitEnv = require('./environment')
-  .environment()
-  .then((env: any) => {
-    env.start();
-    return env;
-  });
+import { environment } from './environment';
+
+const testKitEnv = environment().then((env: any) => {
+  env.start();
+  return env;
+});
 
 // We need to stop the testkit explicitly, since it's running in a different process
 const stopTestKit = () => testKitEnv.then((tk: any) => tk.stop());

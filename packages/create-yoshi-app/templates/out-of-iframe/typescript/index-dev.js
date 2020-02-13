@@ -1,7 +1,7 @@
 const httpTestkit = require('@wix/wix-http-testkit');
-const renderVM = require('./vm');
-const velocityData = require('../velocity.data.json');
-const velocityDataPrivate = require('../velocity.private.data.json');
+const renderVM = require('./dev/vm');
+const velocityData = require('./velocity.data.json');
+const velocityDataPrivate = require('./velocity.private.data.json');
 const fs = require('fs');
 
 const server = httpTestkit.server({

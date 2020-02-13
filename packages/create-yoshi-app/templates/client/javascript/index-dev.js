@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const renderVM = require('./vm');
+const renderVM = require('./dev/vm');
 
 const app = express();
 

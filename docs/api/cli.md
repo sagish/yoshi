@@ -28,13 +28,13 @@ This will run the specified (server) `entryPoint` file and mount a CDN server.
 
 ### options
 
-#### `--entry-point` ( `-e` )
+#### `--entry-point` ( `-e` ) (deprecated!)
 
 Entry point for the app.
 
 Default: `index.js`
 
-#### `--server`
+#### `--server` (deprecated!)
 
 > An alias for `entry-point` configuration option.
 

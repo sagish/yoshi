@@ -151,24 +151,10 @@ Start by opting into app flow by changing your `package.json` or `yoshi.config.j
 }
 ```
 
-In app flow, Yoshi looks for the entry file of your server at `/dev/server.(js|ts)`. Move your current local dev server to that location. For example, if your local dev server is in `index.js`:
+In app flow, Yoshi looks for the entry file of your server at `/index-dev.(js|ts)`. If your local dev server is in `index.js`, then you can call it from `index-dev.js`:
 
 ```
-mkdir dev
-mv index.js dev/server.js
-```
-
-With that, Yoshi will now bundle it into `/dist/server.js`.
-
-Finally, adjust your `package.json` to run it:
-
-```diff
-{
-  "scripts": {
-+    "start": "yoshi start --entry-point=dist/server.js"
--    "start": "yoshi start"
-  }
-}
+require('./index');
 ```
 
 ### Scripts

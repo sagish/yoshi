@@ -1,6 +1,7 @@
 import arg from 'arg';
 import chalk from 'chalk';
 import DevEnvironment from 'yoshi-common/build/dev-environment';
+import { getServerEntry } from 'yoshi-helpers/build/server-entry';
 import { cliCommand } from '../bin/yoshi-monorepo';
 import {
   createClientWebpackConfig,
@@ -39,7 +40,7 @@ const start: cliCommand = async function(argv, rootConfig, { apps, libs }) {
 
       Options
         --help, -h      Displays this message
-        --server        The main file to start your server
+        --server        (Deprecated!) The main file to start your server
         --url           Opens the browser with the supplied URL
         --production    Start using unminified production build
         --https         Serve the app bundle on https
@@ -78,11 +79,13 @@ const start: cliCommand = async function(argv, rootConfig, { apps, libs }) {
   }
 
   const {
-    '--server': serverEntry = 'index.js',
+    '--server': serverEntryCLI,
     '--url': url,
     // '--production': shouldRunAsProduction,
     '--https': shouldUseHttps = pkg.config.servers.cdn.ssl,
   } = args;
+
+  const serverEntry = getServerEntry(serverEntryCLI);
 
   const clientConfig = createClientWebpackConfig(rootConfig, pkg, {
     isDev: true,
