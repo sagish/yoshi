@@ -13,7 +13,7 @@ import { getDevServerUrl } from './utils/suricate';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-const possibleServerEntries = ['./server', '../dev/server'];
+const possibleServerEntries = ['./server', '../dev/server', '../index-dev'];
 
 function createCompiler(webpackConfig: Array<webpack.Configuration>) {
   let compiler: webpack.MultiCompiler;
@@ -152,7 +152,7 @@ function validateServerEntry({
     throw new Error(
       `We couldn't find your server entry. Please use one of the defaults:
           - "src/server": for a fullstack project
-          - "dev/server": for a client only project`,
+          - "index-dev": for other projects`,
     );
   }
 

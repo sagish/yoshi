@@ -276,7 +276,7 @@ export default class Scripts {
       },
     );
 
-    const appServerProcess = execa('node', ['./index.js'], {
+    const appServerProcess = execa('node', ['./index-dev.js'], {
       cwd: this.testDirectory,
       stdio: !this.verbose ? 'pipe' : 'inherit',
       env: {
