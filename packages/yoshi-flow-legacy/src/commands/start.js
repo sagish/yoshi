@@ -66,6 +66,7 @@ const entryPointCLI = cliArgs['entry-point'];
 
 let entryPoint = 'index.js';
 try {
+  // Legacy flow can start while missing server entry.
   entryPoint = getServerEntry(
     entryPointCLI ? addJsSuffix(entryPointCLI) : undefined,
   );
