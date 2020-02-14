@@ -63,9 +63,13 @@ const shouldRunTests = cliArgs['with-tests'] === true;
 const debugPort = cliArgs.debug;
 const debugBrkPort = cliArgs['debug-brk'];
 const entryPointCLI = cliArgs['entry-point'];
-const entryPoint = getServerEntry(
-  entryPointCLI ? addJsSuffix(entryPointCLI) : undefined,
-);
+
+let entryPoint = 'index.js';
+try {
+  entryPoint = getServerEntry(
+    entryPointCLI ? addJsSuffix(entryPointCLI) : undefined,
+  );
+} catch (e) {}
 
 module.exports = runner.command(
   async tasks => {
