@@ -15,28 +15,32 @@ export const getServerEntry = (serverEntryCLI?: string) => {
     return serverEntryCLI;
   }
 
-  const indexDev = path.resolve(`index-dev.${extension}`);
+  const indexDevTS = path.resolve('index-dev.ts');
+  const indexDevJS = path.resolve('index-dev.js');
 
-  if (fs.existsSync(indexDev)) {
-    return indexDev;
+  if (fs.existsSync(indexDevTS)) {
+    return indexDevTS;
   }
-
-  const indexDevJS = path.resolve(`index-dev.js`);
 
   if (fs.existsSync(indexDevJS)) {
     return indexDevJS;
   }
 
-  const index = path.resolve(`index.${extension}`);
+  const indexTS = path.resolve(`index.ts`);
   const indexJS = path.resolve(`index.js`);
-  if (fs.existsSync(index) || fs.existsSync(indexJS)) {
+
+  const indexTSExists = fs.existsSync(indexTS);
+
+  if (indexTSExists || fs.existsSync(indexJS)) {
     console.log(
       chalk.yellow(
-        `Deprecation warning: index.${extension} is not going to be started automatically in Yoshi v5. Please use index-dev.${extension} instead`,
+        `Deprecation warning: index.${
+          indexTSExists ? 'ts' : 'js'
+        } is not going to be started automatically in Yoshi v5. Please use index-dev.${extension} instead`,
       ),
     );
 
-    return fs.existsSync(index) ? index : indexJS;
+    return indexTSExists ? indexTS : indexJS;
   }
 
   throw new Error(

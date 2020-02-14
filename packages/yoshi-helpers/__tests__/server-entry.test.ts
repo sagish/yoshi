@@ -28,40 +28,24 @@ describe('GetServerEntry', () => {
   });
 
   describe('index-dev', () => {
-    it('should try to look for index-dev.js file if project is javascript', () => {
+    it('should try to look for index-dev.ts file', () => {
+      fs.existsSync = jest
+        .fn()
+        .mockImplementation(path => getFilename(path) === 'index-dev.ts');
+
+      expect(getFilename(getServerEntry(undefined))).toEqual('index-dev.ts');
+    });
+
+    it('should fall back to index-dev.js file when index-dev.ts is missing', () => {
       fs.existsSync = jest
         .fn()
         .mockImplementation(path => getFilename(path) === 'index-dev.js');
 
       expect(getFilename(getServerEntry(undefined))).toEqual('index-dev.js');
     });
-
-    it('should look for index-dev.ts file in typescript', () => {
-      fs.existsSync = jest
-        .fn()
-        .mockImplementation(
-          path =>
-            getFilename(path) === 'index-dev.ts' ||
-            getFilename(path) === 'tsconfig.json',
-        );
-
-      expect(getFilename(getServerEntry(undefined))).toEqual('index-dev.ts');
-    });
-
-    it('should fall back to index-dev.js file in typescript when index-dev.ts is missing', () => {
-      fs.existsSync = jest
-        .fn()
-        .mockImplementation(
-          path =>
-            getFilename(path) === 'index-dev.js' ||
-            getFilename(path) === 'tsconfig.json',
-        );
-
-      expect(getFilename(getServerEntry(undefined))).toEqual('index-dev.js');
-    });
   });
 
-  describe('index when index-dev not found', () => {
+  describe('when index-dev is not found try to find index', () => {
     it('should notify about deprecation', () => {
       fs.existsSync = jest
         .fn()
@@ -76,34 +60,18 @@ describe('GetServerEntry', () => {
       );
     });
 
-    it('should use index.js for javascript projects', () => {
+    it('should try to look for index.ts file', () => {
       fs.existsSync = jest
         .fn()
-        .mockImplementation(path => getFilename(path) === 'index.js');
-
-      expect(getFilename(getServerEntry(undefined))).toEqual('index.js');
-    });
-
-    it('should use index.ts for typescript project', () => {
-      fs.existsSync = jest
-        .fn()
-        .mockImplementation(
-          path =>
-            getFilename(path) === 'index.ts' ||
-            getFilename(path) === 'tsconfig.json',
-        );
+        .mockImplementation(path => getFilename(path) === 'index.ts');
 
       expect(getFilename(getServerEntry(undefined))).toEqual('index.ts');
     });
 
-    it('should use index.js if not using index-dev.js for javascript projects', () => {
+    it('should fall back to index.js file when index.ts is missing', () => {
       fs.existsSync = jest
         .fn()
-        .mockImplementation(
-          path =>
-            getFilename(path) === 'index.js' ||
-            getFilename(path) === 'tsconfig.json',
-        );
+        .mockImplementation(path => getFilename(path) === 'index.js');
 
       expect(getFilename(getServerEntry(undefined))).toEqual('index.js');
     });
