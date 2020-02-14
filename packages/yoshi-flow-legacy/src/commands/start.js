@@ -47,6 +47,7 @@ const {
   suffix,
   watch,
 } = require('yoshi-helpers/utils');
+const { getServerEntry } = require('yoshi-helpers/build/server-entry');
 const { debounce } = require('lodash');
 const wixAppServer = require('../tasks/app-server');
 const createBabelConfig = require('yoshi-common/build/create-babel-config')
@@ -61,7 +62,10 @@ const addJsSuffix = suffix('.js');
 const shouldRunTests = cliArgs['with-tests'] === true;
 const debugPort = cliArgs.debug;
 const debugBrkPort = cliArgs['debug-brk'];
-const entryPoint = addJsSuffix(cliArgs['entry-point'] || 'index.js');
+const entryPointCLI = cliArgs['entry-point'];
+const entryPoint = getServerEntry(
+  entryPointCLI ? addJsSuffix(entryPointCLI) : undefined,
+);
 
 module.exports = runner.command(
   async tasks => {

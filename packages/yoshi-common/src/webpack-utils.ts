@@ -150,9 +150,7 @@ function validateServerEntry({
 
   if (!serverEntry && !yoshiServer) {
     throw new Error(
-      `We couldn't find your server entry. Please use one of the defaults:
-          - "src/server": for a fullstack project
-          - "index-dev": for other projects`,
+      `We couldn't find your server entry. Please create index-dev file in the root of your module`,
     );
   }
 

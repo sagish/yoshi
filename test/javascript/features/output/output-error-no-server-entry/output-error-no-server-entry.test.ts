@@ -7,17 +7,13 @@ const scripts = Scripts.setupProjectFromTemplate({
   projectType: 'javascript',
 });
 
-const originalServerFilePath = path.join(
-  scripts.testDirectory,
-  'src/server.js',
-);
-
 describe.each(['prod'] as const)(
   'fails when server entry does not exist [%s]',
   mode => {
     it('integration', async () => {
       try {
-        await fs.remove(originalServerFilePath);
+        await fs.remove(path.join(scripts.testDirectory, 'index-dev.js'));
+        await fs.remove(path.join(scripts.testDirectory, './src/server.js'));
 
         await scripts[mode]();
       } catch (error) {
